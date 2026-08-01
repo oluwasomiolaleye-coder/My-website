@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Our Future | For Shekinah</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,500;1,600&family=Dancing+Script:wght@600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-deep: #060a18;
+    --navy-mid: #0d1830;
+    --ice-blue: #6ec6ff;
+    --ice-blue-bright: #a9dcff;
+    --moon-glow: #eaf3ff;
+    --text-serif: 'Cormorant Garamond', serif;
+    --text-script: 'Dancing Script', cursive;
+    --text-ui: 'Quicksand', sans-serif;
+  }
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0; width:100%; min-height:100vh;
+    font-family: var(--text-ui);
+    background: radial-gradient(ellipse at 70% 15%, #14264d 0%, var(--navy-mid) 35%, var(--navy-deep) 100%);
+    color: var(--moon-glow);
+    overflow-x:hidden;
+  }
+  body{ opacity:0; transition: opacity 0.55s ease; }
+  body.loaded{ opacity:1; }
+  body.leaving{ opacity:0 !important; }
+  @media (prefers-reduced-motion: reduce){
+    .floating-heart{ animation: none !important; }
+  }
+
+  .star{
+    position:absolute;
+    background: var(--moon-glow);
+    border-radius:50%;
+    opacity:0.2;
+    box-shadow: 0 0 4px 1px rgba(234,243,255,0.7), 0 0 10px 2px rgba(110,198,255,0.3);
+    animation: twinkle ease-in-out infinite;
+  }
+  @keyframes twinkle{
+    0%,100%{ opacity:0.2; transform: scale(1); }
+    50%{ opacity:1; transform: scale(1.3); }
+  }
+
+  .floating-heart{
+    position: fixed;
+    bottom: -40px;
+    font-size: 1.1rem;
+    color: var(--ice-blue-bright);
+    opacity: 0.85;
+    text-shadow: 0 0 8px rgba(110,198,255,0.7);
+    animation: heart-float linear infinite;
+    pointer-events:none;
+    z-index: 1;
+  }
+  @keyframes heart-float{
+    0%{ transform: translateY(0) translateX(0) rotate(0deg); opacity:0; }
+    12%{ opacity:0.9; }
+    100%{ transform: translateY(-115vh) translateX(24px) rotate(20deg); opacity:0; }
+  }
+
+  .back-link{
+    position: fixed;
+    top: 1.2rem; left: 1.2rem;
+    z-index: 10;
+    display:inline-flex;
+    align-items:center;
+    gap: 0.4rem;
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(169,220,255,0.3);
+    color: var(--moon-glow);
+    text-decoration:none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    backdrop-filter: blur(6px);
+    transition: background 0.3s ease, transform 0.3s ease;
+  }
+  .back-link:hover{ background: rgba(255,255,255,0.14); transform: translateX(-3px); }
+
+  .wrap{
+    position: relative;
+    min-height: 100vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    padding: 5rem 1.2rem 4rem;
+    z-index: 2;
+  }
+
+  .journal{
+    position: relative;
+    width: min(94vw, 640px);
+    padding: 3.6rem 2.4rem 2.8rem;
+    background:
+      radial-gradient(circle at 50% 0%, rgba(169,220,255,0.12), transparent 55%),
+      linear-gradient(160deg, rgba(25,45,80,0.55), rgba(10,20,45,0.7));
+    border: 1px solid rgba(169,220,255,0.3);
+    box-shadow: 0 25px 60px rgba(0,0,0,0.5), inset 0 0 40px rgba(110,198,255,0.08);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    clip-path: polygon(4% 0%, 96% 0%, 100% 8%, 100% 92%, 96% 100%, 4% 100%, 0% 92%, 0% 8%);
+  }
+  .journal-seal{
+    position:absolute;
+    top: -24px; left:50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 44px; height:44px;
+    border-radius: 8px;
+    background: radial-gradient(circle at 35% 30%, #a9dcff, #1c4a75 75%);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.4), inset 0 0 10px rgba(255,255,255,0.25);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .journal-seal span{
+    display:block;
+    transform: rotate(-45deg);
+    font-size: 1.1rem;
+  }
+  .constellation{
+    position:absolute;
+    inset: 0;
+    pointer-events:none;
+    opacity: 0.5;
+  }
+  .journal-heading{
+    font-family: var(--text-script);
+    font-size: clamp(1.9rem, 5.5vw, 2.7rem);
+    text-align:center;
+    color: var(--ice-blue-bright);
+    text-shadow: 0 0 12px rgba(110,198,255,0.6), 0 0 28px rgba(110,198,255,0.3);
+    margin: 0.4rem 0 1.6rem;
+  }
+  .journal-body{
+    font-family: var(--text-serif);
+    font-style: italic;
+    font-size: clamp(1.02rem, 2.3vw, 1.15rem);
+    line-height: 1.8;
+    color: rgba(234,243,255,0.9);
+  }
+  .journal-body p{ margin: 0 0 1.2rem; }
+  .journal-body p:last-child{ margin-bottom: 0; }
+  .journal-body p.signoff{
+    font-family: var(--text-script);
+    font-style: normal;
+    font-size: 1.3rem;
+    color: var(--ice-blue-bright);
+    text-align: center;
+    margin-top: 1.6rem;
+  }
+  @keyframes blink-cursor{ 0%,49%{ opacity:1; } 50%,100%{ opacity:0; } }
+  .journal-body p.typing::after{
+    content: '|';
+    display: inline-block;
+    margin-left: 2px;
+    color: var(--ice-blue-bright);
+    animation: blink-cursor 0.8s steps(1) infinite;
+  }
+
+  .next-section{
+    position: relative;
+    z-index: 2;
+    width: min(94vw, 640px);
+    margin-top: 2.6rem;
+    text-align: center;
+  }
+  .next-prompt{
+    font-family: var(--text-serif);
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(234,243,255,0.85);
+    margin: 0 0 1.2rem;
+  }
+  .next-buttons{
+    display:flex;
+    flex-wrap: wrap;
+    gap: 0.8rem;
+    justify-content:center;
+  }
+  .next-btn{
+    display:inline-block;
+    padding: 0.75rem 1.4rem;
+    border-radius: 999px;
+    border: 1px solid rgba(169,220,255,0.4);
+    background: linear-gradient(160deg, rgba(110,198,255,0.22), rgba(58,110,165,0.22));
+    color: #eaf3ff;
+    text-decoration:none;
+    font-family: var(--text-ui);
+    font-weight: 600;
+    font-size: 0.92rem;
+    box-shadow: 0 0 16px rgba(110,198,255,0.15);
+    transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, background 0.3s ease;
+  }
+  .next-btn:hover{
+    transform: translateY(-4px) scale(1.04);
+    box-shadow: 0 0 26px rgba(110,198,255,0.4);
+    background: linear-gradient(160deg, rgba(110,198,255,0.38), rgba(58,110,165,0.38));
+  }
+
+  @media (max-width: 640px){
+    .journal{ padding: 2.6rem 1.4rem 2.2rem; }
+  }
+</style>
+
+</head>
+<body>
+
+
+  <a class="back-link" href="for-shekinah.html" data-transition>&larr; Back to the clouds</a>
+  <div id="stars-container"></div>
+  <div id="hearts-container"></div>
+
+  <div class="wrap">
+    <div class="journal">
+      <div class="journal-seal"><span>💙</span></div>
+      <svg class="constellation" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="8" y1="12" x2="22" y2="28" stroke="#6ec6ff" stroke-width="0.3"/>
+        <line x1="22" y1="28" x2="14" y2="46" stroke="#6ec6ff" stroke-width="0.3"/>
+        <line x1="88" y1="18" x2="76" y2="34" stroke="#6ec6ff" stroke-width="0.3"/>
+        <line x1="76" y1="34" x2="90" y2="50" stroke="#6ec6ff" stroke-width="0.3"/>
+        <line x1="10" y1="82" x2="24" y2="70" stroke="#6ec6ff" stroke-width="0.3"/>
+        <line x1="90" y1="86" x2="80" y2="72" stroke="#6ec6ff" stroke-width="0.3"/>
+        <circle cx="8" cy="12" r="0.7" fill="#a9dcff"/>
+        <circle cx="22" cy="28" r="0.7" fill="#a9dcff"/>
+        <circle cx="14" cy="46" r="0.7" fill="#a9dcff"/>
+        <circle cx="88" cy="18" r="0.7" fill="#a9dcff"/>
+        <circle cx="76" cy="34" r="0.7" fill="#a9dcff"/>
+        <circle cx="90" cy="50" r="0.7" fill="#a9dcff"/>
+        <circle cx="10" cy="82" r="0.7" fill="#a9dcff"/>
+        <circle cx="24" cy="70" r="0.7" fill="#a9dcff"/>
+        <circle cx="90" cy="86" r="0.7" fill="#a9dcff"/>
+        <circle cx="80" cy="72" r="0.7" fill="#a9dcff"/>
+      </svg>
+      <h1 class="journal-heading">Our Future 💙</h1>
+      <div class="journal-body">
+        <p>Now for the part I'm looking forward to the most... our future.</p>
+        <p>I don't know exactly what it'll look like. I don't know where we'll be in a few years or what we'll be doing, or if we would even still be together. But one thing I do know is that I genuinely hope you're there beside me through it all.</p>
+        <p>To be honest, there was a lot of hesitation in writing this, because I really don't know what your reaction to it might be, and if not now, sooner or later we're going to have this conversation, but for now I just want us to be free, still spend as much time as we can together (...and ik you're not dying im js), and ig we'll figure it out along the way.</p>
+        <p>I can't wait for all the little things we'll get to experience together. More late-night calls, more pictures, more kisses (you kiss like you're starving lol), and making even more memories than the ones we already have.</p>
+        <p>I know it won't always be easy. There'll be stressful days, misunderstandings, and moments where everything feels like too much. But if we've made it this far, I feel everything we can overcome every other thing.</p>
+        <p class="signoff">The future looks better knowing you'll (hopefully) be in it.</p>
+      </div>
+    </div>
+
+    <div class="next-section">
+      <p class="next-prompt">Where would you like to go next, mama?</p>
+      <div class="next-buttons">
+        <a class="next-btn" href="letter-friends-to-lovers.html" data-transition>friends to lovers</a>
+        <a class="next-btn" href="gift-from-heaven.html" data-transition>My gift from heaven: SHEKINAH!</a>
+        <a class="next-btn" href="memories.html" data-transition>Memories</a>
+        <a class="next-btn" href="https://open.spotify.com/playlist/59DwIZt9808pcmMG8Bd0Nt?si=8Wq40ybdQPqV4f7AyGzkLg&utm_source=copy-link&pt=63b8310b266b738b3a89fbc6cd728e00&sci=spotify%3Acard-config%3A0GSG6KF16QMIJUBjfrQtKT" target="_blank" rel="noopener">A little surprise</a>
+      </div>
+    </div>
+  </div>
+
+<script>
+function rand(min, max){ return Math.random() * (max - min) + min; }
+
+const starsContainer = document.getElementById('stars-container');
+for(let i = 0; i < 140; i++){
+  const star = document.createElement('div');
+  star.className = 'star';
+  const size = rand(1, 2.4);
+  star.style.width = size + 'px';
+  star.style.height = size + 'px';
+  star.style.top = rand(0, 100) + 'vh';
+  star.style.left = rand(0, 100) + 'vw';
+  star.style.animationDuration = rand(1.8, 4.5) + 's';
+  star.style.animationDelay = rand(0, 5) + 's';
+  starsContainer.appendChild(star);
+}
+
+const heartsContainer = document.getElementById('hearts-container');
+const heartGlyphs = ['💙','🩵'];
+function spawnHeart(){
+  const h = document.createElement('div');
+  h.className = 'floating-heart';
+  h.textContent = heartGlyphs[Math.floor(Math.random() * heartGlyphs.length)];
+  h.style.left = rand(2, 96) + 'vw';
+  h.style.fontSize = rand(0.9, 1.5) + 'rem';
+  h.style.animationDuration = rand(11, 18) + 's';
+  heartsContainer.appendChild(h);
+  setTimeout(() => h.remove(), 18000);
+}
+setInterval(spawnHeart, 1300);
+for(let i = 0; i < 6; i++) setTimeout(spawnHeart, i * 600);
+
+/* type the letter out one character at a time */
+function typewriterReveal(bodySelector, charsPerTick, tickMs){
+  const body = document.querySelector(bodySelector);
+  const paragraphs = Array.from(body.querySelectorAll('p'));
+  const paraTokens = paragraphs.map((p) => {
+    const parts = p.innerHTML.split(/(<br\s*\/?>)/i);
+    const tokens = [];
+    parts.forEach((part) => {
+      if(/^<br\s*\/?>$/i.test(part)){
+        tokens.push({ type: 'br' });
+      } else if(part.length){
+        Array.from(part).forEach((ch) => tokens.push({ type: 'char', value: ch }));
+      }
+    });
+    return tokens;
+  });
+  paragraphs.forEach((p) => { p.innerHTML = ''; p.style.opacity = '0'; });
+
+  let pIndex = 0;
+  function typeParagraph(){
+    if(pIndex >= paragraphs.length) return;
+    const p = paragraphs[pIndex];
+    p.style.opacity = '1';
+    p.classList.add('typing');
+    const tokens = paraTokens[pIndex];
+    let tIndex = 0;
+    let buffer = '';
+    function tick(){
+      for(let c = 0; c < charsPerTick && tIndex < tokens.length; c++){
+        const tok = tokens[tIndex];
+        buffer += tok.type === 'br' ? '<br>' : tok.value;
+        tIndex++;
+      }
+      p.innerHTML = buffer;
+      if(tIndex < tokens.length){
+        setTimeout(tick, tickMs);
+      } else {
+        p.classList.remove('typing');
+        pIndex++;
+        setTimeout(typeParagraph, 260);
+      }
+    }
+    tick();
+  }
+  typeParagraph();
+}
+setTimeout(() => typewriterReveal('.journal-body', 3, 12), 650);
+
+requestAnimationFrame(() => document.body.classList.add('loaded'));
+document.querySelectorAll('a[data-transition]').forEach((link) => {
+  link.addEventListener('click', (e) => {
+    e.preventDefault();
+    const href = link.getAttribute('href');
+    document.body.classList.remove('loaded');
+    document.body.classList.add('leaving');
+    setTimeout(() => { window.location.href = href; }, 480);
+  });
+});
+</script>
+</body>
+</html>
